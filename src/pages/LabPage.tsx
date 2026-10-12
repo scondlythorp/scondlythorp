@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Compass, Sprout, Eye, Cpu, AlertCircle, Sparkles, Sliders } from 'lucide-react';
+import { Compass, Sprout, Eye, Cpu, AlertCircle, Sparkles, Sliders, Terminal } from 'lucide-react';
 import { labExperimentsData } from '../data/lab';
 import { SimulationRunner } from '../components/SimulationRunner';
 import { AgriDecisionEngine } from '../components/AgriDecisionEngine';
+import { PythonCodeRunner } from '../components/PythonCodeRunner';
 
 export const LabPage: React.FC = () => {
-  const [activeInteractiveSim, setActiveInteractiveSim] = useState<'drone-sim' | 'agri-decision'>('drone-sim');
+  const [activeInteractiveSim, setActiveInteractiveSim] = useState<'drone-sim' | 'agri-decision' | 'python-cli'>('drone-sim');
 
   return (
     <div className="space-y-16 pb-16">
@@ -43,7 +44,7 @@ export const LabPage: React.FC = () => {
           </div>
 
           {/* Switcher */}
-          <div className="flex items-center p-1 rounded-lg bg-slate-900 border border-slate-800">
+          <div className="flex flex-wrap items-center p-1 rounded-lg bg-slate-900 border border-slate-800 gap-1">
             <button
               onClick={() => setActiveInteractiveSim('drone-sim')}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
@@ -66,15 +67,24 @@ export const LabPage: React.FC = () => {
               <Sprout className="w-3.5 h-3.5" />
               Agri Decision Engine
             </button>
+            <button
+              onClick={() => setActiveInteractiveSim('python-cli')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5 ${
+                activeInteractiveSim === 'python-cli'
+                  ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Terminal className="w-3.5 h-3.5" />
+              Python CLI & Code
+            </button>
           </div>
         </div>
 
         {/* Selected Interactive Component */}
-        {activeInteractiveSim === 'drone-sim' ? (
-          <SimulationRunner />
-        ) : (
-          <AgriDecisionEngine />
-        )}
+        {activeInteractiveSim === 'drone-sim' && <SimulationRunner />}
+        {activeInteractiveSim === 'agri-decision' && <AgriDecisionEngine />}
+        {activeInteractiveSim === 'python-cli' && <PythonCodeRunner />}
       </section>
 
       {/* Lab Experiment Portfolio Cards */}

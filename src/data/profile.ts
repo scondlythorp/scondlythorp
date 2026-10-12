@@ -1,4 +1,5 @@
 import { ProfileData } from '../types';
+import mltPortrait from '../assets/images/MLT.png';
 
 export const profileData: ProfileData = {
   fullName: "Modou Lamin Thorp",
@@ -22,5 +23,5 @@ My long-term goal is to continue growing as a versatile engineer, contribute to 
   portfolioUrl: "https://github.com/scondlythorp",
   educationSummary: "National Diploma in Computer Science, Civil Service University, The Gambia (Completed, formal certificate pending issuance)",
   availability: "Open to software development opportunities, technical collaborations, freelance projects, and conversations with people building useful technology.",
-  avatarImage: "/images/profile/modou_lamin_thorp.jpg"
+  avatarImage: mltPortrait
 };

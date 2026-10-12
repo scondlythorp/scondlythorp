@@ -253,9 +253,31 @@ export const ContactPage: React.FC = () => {
 
                 {/* Subject */}
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Subject / Topic <span className="text-rose-400">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-medium text-slate-300">
+                      Subject / Topic <span className="text-rose-400">*</span>
+                    </label>
+                  </div>
+
+                  {/* Quick Subject Templates */}
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {[
+                      "Software Engineering Role",
+                      "Full-Stack Project Collaboration",
+                      "ChiaLink & Agritech Inquiry",
+                      "Freelance Backend Development"
+                    ].map(tpl => (
+                      <button
+                        key={tpl}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, subject: tpl })}
+                        className="text-[11px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 hover:text-cyan-300 border border-slate-700 transition-colors"
+                      >
+                        + {tpl}
+                      </button>
+                    ))}
+                  </div>
+
                   <input
                     type="text"
                     value={formData.subject}
@@ -272,9 +294,14 @@ export const ContactPage: React.FC = () => {
 
                 {/* Message */}
                 <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1">
-                    Your Message <span className="text-rose-400">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-medium text-slate-300">
+                      Your Message <span className="text-rose-400">*</span>
+                    </label>
+                    <span className="text-[10px] text-slate-500 font-mono">
+                      {formData.message.length} chars (min 15)
+                    </span>
+                  </div>
                   <textarea
                     rows={5}
                     value={formData.message}

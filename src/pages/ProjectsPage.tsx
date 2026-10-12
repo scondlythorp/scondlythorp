@@ -1,13 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, Github, ExternalLink, ArrowRight, Layers, Sparkles } from 'lucide-react';
+import { Search, Filter, Github, ExternalLink, ArrowRight, Layers, Sparkles, FileCode, CheckCircle2 } from 'lucide-react';
 import { projectsData } from '../data/projects';
 import { Project, ProjectCategory } from '../types';
+import { ProductConceptsSection } from '../components/ProductConceptsSection';
 
 interface ProjectsPageProps {
   onOpenProject: (project: Project) => void;
 }
 
 export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenProject }) => {
+  const [activeViewTab, setActiveViewTab] = useState<'implemented' | 'concepts'>('implemented');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedStatus, setSelectedStatus] = useState<string>('All');
@@ -45,69 +47,102 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenProject }) => 
   }, [searchQuery, selectedCategory, selectedStatus]);
 
   return (
-    <div className="space-y-12 pb-16">
-      {/* Header */}
-      <section className="space-y-3 pt-4">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cyan-400">
-          <span>Software Engineering Portfolio</span>
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-          Verified Software Projects
-        </h1>
-        <p className="text-sm sm:text-base text-slate-300 max-w-3xl leading-relaxed">
-          Explore complete full-stack web applications, REST APIs, enterprise Java architectures, and agricultural technology systems engineered with modern standards.
-        </p>
-      </section>
-
-      {/* Filter and Search Bar */}
-      <section className="p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-        <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
-          {/* Search Box */}
-          <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search by technology, name, or keyword..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-slate-300"
-              >
-                Clear
-              </button>
-            )}
+    <div className="space-y-10 pb-16">
+      {/* View Mode Switcher */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-b border-slate-800 pb-4">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-cyan-400">
+            <span>Portfolio Showcase Modes</span>
           </div>
-
-          {/* Results Count */}
-          <div className="text-xs text-slate-400 font-mono">
-            Showing {filteredProjects.length} of {projectsData.length} projects
-          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
+            {activeViewTab === 'implemented' ? 'Verified Software Projects' : 'Product Concepts & Technical Specifications'}
+          </h1>
         </div>
 
-        {/* Category Segmented Buttons */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-800/80">
-          <span className="text-xs text-slate-400 mr-2 flex items-center gap-1">
-            <Filter className="w-3.5 h-3.5" /> Domain:
-          </span>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
-                selectedCategory === cat
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-semibold'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        <div className="flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800 gap-1 self-start sm:self-auto">
+          <button
+            onClick={() => setActiveViewTab('implemented')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
+              activeViewTab === 'implemented'
+                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            Implemented Systems (8)
+          </button>
+          <button
+            onClick={() => setActiveViewTab('concepts')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
+              activeViewTab === 'concepts'
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <FileCode className="w-3.5 h-3.5" />
+            Product Concepts (5)
+          </button>
         </div>
-      </section>
+      </div>
+
+      {/* Render selected view */}
+      {activeViewTab === 'concepts' ? (
+        <ProductConceptsSection />
+      ) : (
+        <div className="space-y-10">
+          <p className="text-sm text-slate-300 max-w-3xl leading-relaxed -mt-4">
+            Explore complete full-stack web applications, REST APIs, enterprise Java architectures, and agricultural technology systems engineered with modern standards.
+          </p>
+
+          {/* Filter and Search Bar */}
+          <section className="p-4 sm:p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
+            <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between">
+              {/* Search Box */}
+              <div className="relative flex-1 max-w-md">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search by technology, name, or keyword..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-slate-300"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              {/* Results Count */}
+              <div className="text-xs text-slate-400 font-mono">
+                Showing {filteredProjects.length} of {projectsData.length} projects
+              </div>
+            </div>
+
+            {/* Category Segmented Buttons */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-slate-800/80">
+              <span className="text-xs text-slate-400 mr-2 flex items-center gap-1">
+                <Filter className="w-3.5 h-3.5" /> Domain:
+              </span>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer whitespace-nowrap ${
+                    selectedCategory === cat
+                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-semibold'
+                      : 'bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </section>
 
       {/* Projects Gallery Grid */}
       {filteredProjects.length > 0 ? (
@@ -220,6 +255,8 @@ export const ProjectsPage: React.FC<ProjectsPageProps> = ({ onOpenProject }) => 
           >
             Reset All Filters
           </button>
+        </div>
+      )}
         </div>
       )}
     </div>

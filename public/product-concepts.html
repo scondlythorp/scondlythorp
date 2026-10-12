@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Concepts and Technical Specifications — Modou Lamin Thorp (Gambian_Techie)</title>
+  <meta name="description" content="Five independent software products planned and documented in detail by Modou Lamin Thorp (Gambian_Techie). Specification stage (v1.0).">
+  <style>
+    /* CSS: Reset & Variables */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      --bg-color: #ffffff;
+      --surface-color: #f8fafc;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-subtle: #64748b;
+      --focus-ring: #0284c7;
+      --badge-bg: #f1f5f9;
+      --badge-text: #0f172a;
+      --badge-border: #cbd5e1;
+      --tag-bg: #f1f5f9;
+      --tag-text: #334155;
+      --container-max-w: 1200px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #0b1120;
+        --surface-color: #0f172a;
+        --card-bg: #131d31;
+        --border-color: #1e293b;
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --text-subtle: #64748b;
+        --focus-ring: #38bdf8;
+        --badge-bg: #1e293b;
+        --badge-text: #e2e8f0;
+        --badge-border: #334155;
+        --tag-bg: #0f172a;
+        --tag-text: #cbd5e1;
+      }
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2.5rem 1.25rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max-w);
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 2rem;
+    }
+
+    .brand-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .brand-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.625rem;
+      background-color: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      border-radius: 4px;
+      color: var(--badge-text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .owner-bio {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      max-width: 800px;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-intro {
+      font-size: 1.0625rem;
+      color: var(--text-muted);
+      max-width: 820px;
+      line-height: 1.65;
+    }
+
+    /* Responsive Grid: 1 col mobile, 2 col tablet, 3 col desktop */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      width: 100%;
+    }
+
+    @media (min-width: 640px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      position: relative;
+    }
+
+    .card:focus-visible {
+      outline: 2px solid var(--focus-ring);
+      outline-offset: 3px;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+      border-color: var(--focus-ring);
+    }
+
+    .card-visual {
+      width: 100%;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--surface-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-visual svg {
+      width: 100%;
+      height: 100%;
+      max-height: 180px;
+      display: block;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .card-meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-category {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .card-status {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      background-color: var(--badge-bg);
+      color: var(--badge-text);
+      border: 1px solid var(--badge-border);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      white-space: nowrap;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 0.625rem;
+      color: var(--text-main);
+    }
+
+    .card-description {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+      margin-top: 0.5rem;
+    }
+
+    .tag-chip {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      background-color: var(--tag-bg);
+      color: var(--tag-text);
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 4rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 2rem;
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--text-subtle);
+      width: 100%;
+    }
+
+    footer a {
+      color: var(--focus-ring);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand-bar">
+        <div class="brand-title">Modou Lamin Thorp <span style="font-weight: normal; opacity: 0.7;">·</span> <span style="color: var(--focus-ring);">Gambian_Techie</span></div>
+        <div class="brand-badge">Specification stage (v1.0)</div>
+      </div>
+      <p class="owner-bio">
+        A Gambian computer science student and aspiring software developer focused on backend systems, REST APIs and web development (Node.js, Express, PostgreSQL, Prisma).
+      </p>
+      <h1 class="section-title">Product Concepts and Technical Specifications</h1>
+      <p class="section-intro">
+        Five independent software products I have planned and documented in detail, each with architecture, database design, API design, security and testing specifications. They are in the specification stage, not live.
+      </p>
+    </header>
+
+    <main>
+      <section class="projects-grid" aria-label="Product Concepts and Technical Specifications">
+
+        <!-- 1. Nova AgriSense -->
+        <article class="card" tabindex="0" aria-labelledby="p1-title">
+          <div class="card-visual">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract vector illustration of Nova AgriSense showing agricultural crop rows and a bar chart in deep green and earth brown">
+              <!-- Background deep green / earth tone -->
+              <rect width="400" height="180" fill="#1b382b" />
+              <!-- Earth contour / field horizon -->
+              <path d="M0 130 Q100 115 200 128 T400 120 L400 180 L0 180 Z" fill="#4d3222" opacity="0.9" />
+              <path d="M0 145 Q120 135 240 148 T400 140 L400 180 L0 180 Z" fill="#382417" />
+              <!-- Crop rows converging -->
+              <path d="M40 180 L140 125" stroke="#2d5a3e" stroke-width="4" stroke-linecap="round" />
+              <path d="M100 180 L170 125" stroke="#2d5a3e" stroke-width="4" stroke-linecap="round" />
+              <path d="M160 180 L200 125" stroke="#2d5a3e" stroke-width="4" stroke-linecap="round" />
+              <path d="M220 180 L230 125" stroke="#2d5a3e" stroke-width="4" stroke-linecap="round" />
+              <path d="M280 180 L260 125" stroke="#2d5a3e" stroke-width="4" stroke-linecap="round" />
+              <!-- Analytics chart bars -->
+              <rect x="240" y="50" width="22" height="60" rx="3" fill="#529b6e" />
+              <rect x="272" y="32" width="22" height="78" rx="3" fill="#6bbe8b" />
+              <rect x="304" y="65" width="22" height="45" rx="3" fill="#886047" />
+              <rect x="336" y="20" width="22" height="90" rx="3" fill="#8cd9a8" />
+              <!-- Chart baseline & trend line -->
+              <line x1="225" y1="112" x2="375" y2="112" stroke="#a37657" stroke-width="2" />
+              <polyline points="251,45 283,28 315,55 347,15" fill="none" stroke="#d5bba8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              <!-- Subtle sun / map node -->
+              <circle cx="70" cy="50" r="24" fill="#a57754" opacity="0.35" />
+              <circle cx="70" cy="50" r="14" fill="#d5bba8" opacity="0.8" />
+            </svg>
+          </div>
+          <div class="card-content">
+            <div>
+              <div class="card-meta-top">
+                <span class="card-category">Agricultural analytics</span>
+                <span class="card-status">Specification stage (v1.0)</span>
+              </div>
+              <h2 id="p1-title" class="card-title">Nova AgriSense</h2>
+              <p class="card-description">
+                Turns farm and production records into yield, crop-mix, seasonal and regional dashboards, reports and data-quality checks. Designed with robust spatial querying and structured schemas to eliminate agricultural reporting blindspots.
+              </p>
+            </div>
+            <div class="tag-container" aria-label="Technologies and tags">
+              <span class="tag-chip">Next.js</span>
+              <span class="tag-chip">PostgreSQL</span>
+              <span class="tag-chip">PostGIS</span>
+              <span class="tag-chip">Analytics</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2. GroCloud -->
+        <article class="card" tabindex="0" aria-labelledby="p2-title">
+          <div class="card-visual">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract vector illustration of GroCloud showing a greenhouse structure with sensor signal waves in botanical green and soft blue">
+              <!-- Background soft blue and botanical green -->
+              <rect width="400" height="180" fill="#0d2426" />
+              <!-- Atmosphere waves -->
+              <path d="M0 150 Q100 135 200 148 T400 142 L400 180 L0 180 Z" fill="#143c3a" />
+              <!-- Greenhouse geometric frame -->
+              <path d="M90 145 L90 85 L150 45 L210 85 L210 145 Z" fill="#184e46" stroke="#38a38d" stroke-width="2" />
+              <line x1="150" y1="45" x2="150" y2="145" stroke="#38a38d" stroke-width="1.5" />
+              <line x1="90" y1="105" x2="210" y2="105" stroke="#38a38d" stroke-width="1.5" />
+              <!-- Internal plants / leaves -->
+              <circle cx="120" cy="130" r="10" fill="#2fd19d" opacity="0.6" />
+              <circle cx="150" cy="125" r="12" fill="#2fd19d" opacity="0.8" />
+              <circle cx="180" cy="130" r="10" fill="#2fd19d" opacity="0.6" />
+              <!-- Sensor Node at apex -->
+              <circle cx="150" cy="45" r="5" fill="#60a5fa" />
+              <!-- Sensor waves emitted into cloud -->
+              <path d="M165 40 A20 20 0 0 1 175 60" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" />
+              <path d="M175 32 A32 32 0 0 1 190 65" fill="none" stroke="#93c5fd" stroke-width="2" stroke-linecap="round" />
+              <path d="M185 24 A45 45 0 0 1 205 70" fill="none" stroke="#bfdbfe" stroke-width="2" stroke-linecap="round" opacity="0.8" />
+              <!-- Time-series curve on right -->
+              <path d="M230 110 Q260 60 290 85 T350 45 T390 70" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+              <circle cx="290" cy="85" r="4" fill="#38bdf8" />
+              <circle cx="350" cy="45" r="4" fill="#60a5fa" />
+              <!-- Alert ping indicator -->
+              <circle cx="350" cy="45" r="9" fill="none" stroke="#93c5fd" stroke-width="1.5" opacity="0.7" />
+            </svg>
+          </div>
+          <div class="card-content">
+            <div>
+              <div class="card-meta-top">
+                <span class="card-category">Environmental monitoring</span>
+                <span class="card-status">Specification stage (v1.0)</span>
+              </div>
+              <h2 id="p2-title" class="card-title">GroCloud</h2>
+              <p class="card-description">
+                Collects sensor data from greenhouses and farms, shows live and historical charts, and raises alerts, always labelling live, historical, manual and simulated data. Provides strict data provenance across microclimate measurements.
+              </p>
+            </div>
+            <div class="tag-container" aria-label="Technologies and tags">
+              <span class="tag-chip">MQTT</span>
+              <span class="tag-chip">Time-series</span>
+              <span class="tag-chip">IoT</span>
+              <span class="tag-chip">Alerts</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 3. Smart Farm Management -->
+        <article class="card" tabindex="0" aria-labelledby="p3-title">
+          <div class="card-visual">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract vector illustration of Smart Farm Management showing a field grid and an offline task checklist in forest green and neutral tones">
+              <!-- Background forest green -->
+              <rect width="400" height="180" fill="#132a1e" />
+              <!-- Isometric / perspective field grid -->
+              <g transform="translate(40, 50)" stroke="#2b5941" stroke-width="1.5" fill="#1a3d2c">
+                <polygon points="60,0 160,0 120,70 20,70" />
+                <polygon points="165,0 265,0 225,70 125,70" fill="#204834" />
+                <polygon points="20,75 120,75 80,115 -20,115" />
+                <polygon points="125,75 225,75 185,115 85,115" fill="#24523b" />
+              </g>
+              <!-- Field furrow pattern lines -->
+              <line x1="85" y1="65" x2="160" y2="65" stroke="#3b7a59" stroke-width="1.5" stroke-dasharray="3 3" />
+              <line x1="105" y1="85" x2="180" y2="85" stroke="#3b7a59" stroke-width="1.5" stroke-dasharray="3 3" />
+              <!-- Clipboard / Mobile checklist container on right -->
+              <rect x="250" y="30" width="105" height="120" rx="6" fill="#1f3b2e" stroke="#52886a" stroke-width="2" />
+              <rect x="280" y="24" width="45" height="12" rx="3" fill="#52886a" />
+              <!-- Task checkboxes and lines -->
+              <rect x="265" y="52" width="12" height="12" rx="2" fill="#2ecc71" />
+              <polyline points="267,58 270,61 275,54" fill="none" stroke="#ffffff" stroke-width="1.5" />
+              <line x1="285" y1="58" x2="335" y2="58" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
+              
+              <rect x="265" y="74" width="12" height="12" rx="2" fill="#2ecc71" />
+              <polyline points="267,80 270,83 275,76" fill="none" stroke="#ffffff" stroke-width="1.5" />
+              <line x1="285" y1="80" x2="340" y2="80" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" />
+
+              <rect x="265" y="96" width="12" height="12" rx="2" fill="#1a3d2c" stroke="#94a3b8" stroke-width="1.5" />
+              <line x1="285" y1="102" x2="325" y2="102" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+
+              <!-- Offline sync symbol (two arrows) -->
+              <circle cx="302" cy="128" r="9" fill="#132a1e" stroke="#82b89a" stroke-width="1.5" />
+              <path d="M298 126 L306 126 L303 123" fill="none" stroke="#82b89a" stroke-width="1.2" stroke-linecap="round" />
+              <path d="M306 130 L298 130 L301 133" fill="none" stroke="#82b89a" stroke-width="1.2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <div class="card-content">
+            <div>
+              <div class="card-meta-top">
+                <span class="card-category">Farm operations</span>
+                <span class="card-status">Specification stage (v1.0)</span>
+              </div>
+              <h2 id="p3-title" class="card-title">Smart Farm Management</h2>
+              <p class="card-description">
+                Mobile-first, offline-tolerant app for fields, crop plans, tasks, input stock, labour, expenses and harvest records. Engineered for intermittent rural connectivity with local-first replication and transaction queueing.
+              </p>
+            </div>
+            <div class="tag-container" aria-label="Technologies and tags">
+              <span class="tag-chip">PWA</span>
+              <span class="tag-chip">NestJS</span>
+              <span class="tag-chip">PostgreSQL</span>
+              <span class="tag-chip">Offline sync</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4. AI Operations Control Plane -->
+        <article class="card" tabindex="0" aria-labelledby="p4-title">
+          <div class="card-visual">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract vector illustration of AI Operations Control Plane showing a node graph with a security shield in charcoal and blue">
+              <!-- Background charcoal -->
+              <rect width="400" height="180" fill="#111827" />
+              <!-- Node grid connections -->
+              <line x1="60" y1="50" x2="130" y2="90" stroke="#1f2937" stroke-width="2" />
+              <line x1="60" y1="130" x2="130" y2="90" stroke="#1f2937" stroke-width="2" />
+              <line x1="130" y1="90" x2="200" y2="90" stroke="#2563eb" stroke-width="2.5" />
+              <line x1="200" y1="90" x2="270" y2="50" stroke="#1f2937" stroke-width="2" />
+              <line x1="200" y1="90" x2="270" y2="130" stroke="#1f2937" stroke-width="2" />
+              <line x1="270" y1="50" x2="340" y2="90" stroke="#1f2937" stroke-width="2" />
+              <line x1="270" y1="130" x2="340" y2="90" stroke="#1f2937" stroke-width="2" />
+              <!-- External Agent Nodes -->
+              <circle cx="60" cy="50" r="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="60" cy="130" r="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="130" cy="90" r="10" fill="#1d4ed8" stroke="#60a5fa" stroke-width="2" />
+              <circle cx="270" cy="50" r="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="270" cy="130" r="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2" />
+              <circle cx="340" cy="90" r="8" fill="#1e293b" stroke="#3b82f6" stroke-width="2" />
+              <!-- Central Shield / Governance Guardrail -->
+              <g transform="translate(175, 55)">
+                <path d="M25 0 L50 12 L50 42 C50 62 25 72 25 72 C25 72 0 62 0 42 L0 12 Z" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2.5" />
+                <!-- Keyhole / Approval checkmark inside shield -->
+                <path d="M17 35 L23 42 L34 28" fill="none" stroke="#93c5fd" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+              <!-- Telemetry Pulse circles -->
+              <circle cx="200" cy="90" r="38" fill="none" stroke="#3b82f6" stroke-width="1" stroke-dasharray="4 4" opacity="0.6" />
+            </svg>
+          </div>
+          <div class="card-content">
+            <div>
+              <div class="card-meta-top">
+                <span class="card-category">AI agent governance</span>
+                <span class="card-status">Specification stage (v1.0)</span>
+              </div>
+              <h2 id="p4-title" class="card-title">AI Operations Control Plane</h2>
+              <p class="card-description">
+                Traces, cost tracking, evaluations, human approval of sensitive actions and tamper-evident audit logs for AI agents. Formulated to provide end-to-end security compliance and operational visibility across autonomous model workflows.
+              </p>
+            </div>
+            <div class="tag-container" aria-label="Technologies and tags">
+              <span class="tag-chip">Observability</span>
+              <span class="tag-chip">Evaluation</span>
+              <span class="tag-chip">Security</span>
+              <span class="tag-chip">SaaS</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 5. AgriBridge Gambia (working name) -->
+        <article class="card" tabindex="0" aria-labelledby="p5-title">
+          <div class="card-visual">
+            <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Abstract vector illustration of AgriBridge Gambia showing two linked nodes with an agricultural market stall in agricultural green and warm neutral tones">
+              <!-- Background agricultural green & warm neutral -->
+              <rect width="400" height="180" fill="#15281e" />
+              <!-- Soft market ground contour -->
+              <path d="M0 145 C120 135 280 155 400 140 L400 180 L0 180 Z" fill="#3a2e24" opacity="0.7" />
+              <!-- Bridge / linking arc connecting Farmer and Buyer -->
+              <path d="M70 120 Q200 40 330 120" fill="none" stroke="#48bb78" stroke-width="3" stroke-dasharray="6 4" />
+              <!-- Left Node: Farmer Cooperative -->
+              <circle cx="70" cy="120" r="16" fill="#22543d" stroke="#68d391" stroke-width="2.5" />
+              <path d="M63 120 L68 114 L77 125" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+              <text x="70" y="152" fill="#c6f6d5" font-size="10" font-family="system-ui" text-anchor="middle" font-weight="600">Producers</text>
+              <!-- Right Node: Commodity Buyer -->
+              <circle cx="330" cy="120" r="16" fill="#2c5282" stroke="#63b3ed" stroke-width="2.5" />
+              <path d="M324 120 L336 120 M330 114 L330 126" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+              <text x="330" y="152" fill="#bee3f8" font-size="10" font-family="system-ui" text-anchor="middle" font-weight="600">Buyers</text>
+              <!-- Central Market Canopy / Stall (The Bridge exchange) -->
+              <g transform="translate(155, 65)">
+                <!-- Canopy striped roof -->
+                <polygon points="10,25 80,25 70,0 20,0" fill="#d69e2e" />
+                <polygon points="25,25 35,25 30,0 22,0" fill="#eedc82" />
+                <polygon points="45,25 55,25 50,0 42,0" fill="#eedc82" />
+                <polygon points="65,25 75,25 68,0 60,0" fill="#eedc82" />
+                <!-- Stall counter -->
+                <rect x="18" y="25" width="54" height="25" fill="#744210" rx="2" />
+                <rect x="23" y="30" width="12" height="8" fill="#48bb78" rx="1" />
+                <rect x="39" y="30" width="12" height="8" fill="#ed8936" rx="1" />
+                <rect x="55" y="30" width="12" height="8" fill="#ecc94b" rx="1" />
+                <!-- Verification badge pin -->
+                <circle cx="45" cy="5" r="9" fill="#38a169" stroke="#ffffff" stroke-width="1.5" />
+                <polyline points="42,5 44,7 48,3" fill="none" stroke="#ffffff" stroke-width="1.5" />
+              </g>
+            </svg>
+          </div>
+          <div class="card-content">
+            <div>
+              <div class="card-meta-top">
+                <span class="card-category">Agricultural marketplace</span>
+                <span class="card-status">Specification stage (v1.0)</span>
+              </div>
+              <h2 id="p5-title" class="card-title">AgriBridge Gambia (working name)</h2>
+              <p class="card-description">
+                Connects farmers, cooperatives and buyers with verified listings, supply-and-demand visibility and price intelligence. Architected to eliminate value chain opacity and build transparent direct market access across The Gambia.
+              </p>
+            </div>
+            <div class="tag-container" aria-label="Technologies and tags">
+              <span class="tag-chip">Marketplace</span>
+              <span class="tag-chip">Verification</span>
+              <span class="tag-chip">Search</span>
+              <span class="tag-chip">REST API</span>
+            </div>
+          </div>
+        </article>
+
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        &copy; 2026 Modou Lamin Thorp (Gambian_Techie) &middot; National Diploma in Computer Science &middot; The Gambia, West Africa
+      </p>
+      <p style="margin-top: 0.5rem;">
+        <a href="/">Back to Full Personal Portfolio Application</a>
+      </p>
+    </footer>
+  </div>
+
+  <script>
+    // Vanilla JavaScript: Keyboard accessibility & subtle interaction
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const title = card.querySelector('.card-title')?.textContent;
+            const category = card.querySelector('.card-category')?.textContent;
+            console.log(`Focused card: ${title} (${category}) - Specification stage (v1.0)`);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

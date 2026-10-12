@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Printer, Mail, Phone, MapPin, Github, ExternalLink, CheckCircle2, FileText, AlertCircle } from 'lucide-react';
+import { Download, Printer, Mail, Phone, MapPin, Github, ExternalLink, CheckCircle2, FileText, AlertCircle, Copy, Check } from 'lucide-react';
 import { profileData } from '../data/profile';
 import { projectsData } from '../data/projects';
 import { skillsData } from '../data/skills';
@@ -8,14 +8,56 @@ import { achievementsData } from '../data/achievements';
 
 export const CVPage: React.FC = () => {
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+  const [copiedPlaintext, setCopiedPlaintext] = useState(false);
 
   const handlePrint = () => {
     window.print();
   };
 
   const handleDownload = () => {
-    // Check if external PDF is available or open instructions modal
     setDownloadModalOpen(true);
+  };
+
+  const handleCopyPlaintext = () => {
+    const plainTextCV = `MODOU LAMIN THORP
+Software Developer | Full-Stack Engineering, AI & Emerging Technologies
+Location: The Gambia, West Africa
+Email: modoulaminthorp4@gmail.com
+Phone: +220 874168300
+GitHub: https://github.com/scondlythorp
+
+PROFESSIONAL SUMMARY
+Software Developer based in The Gambia with formal computer science education and practical full-stack engineering experience. Specializes in relational databases, robust REST APIs, authentication security, and multi-tenant applications using Node.js, Express, React, PostgreSQL, and Java. Top 8 Finalist in the Africa Elevate DRC Innovation Bootcamp 2026.
+
+EDUCATION
+Civil Service University, The Gambia
+National Diploma in Computer Science (Completed, Certificate Pending Issuance)
+Coursework: OOP (Java), Relational Databases & SQL, Web Development, Software Engineering, Computer Networking.
+
+CORE TECHNICAL SKILLS
+- Languages: JavaScript (ES6+), TypeScript, Java, Python, SQL, HTML5, CSS3
+- Web & Frameworks: React 19, Next.js, Node.js, Express.js, REST APIs, Tailwind CSS, Vite
+- Databases: PostgreSQL, Prisma ORM, MySQL, MongoDB, Database Normalization
+- Security & Validation: JWT, bcrypt, Role-Based Access Control (RBAC), Zod Schema Validation
+- AI & Data: Python, Streamlit, Pandas, NumPy, Decision Support Systems
+
+FEATURED PROJECTS
+1. Farm Management System (React 19, Node.js, Express 5, Prisma, PostgreSQL, Zod, JWT)
+   Multi-tenant poultry platform tracking flock batches, mortality rates, feed warehouse inventory, and tenant-scoped financials.
+2. Pharmacy Management System (Node.js, Express, PostgreSQL, Prisma, JWT, bcrypt, Zod, React)
+   Dispensary inventory, batch expiry surveillance, and local payment modeling (Cash, Wave, Afrimoney).
+3. ChiaLink (React, TypeScript, Node.js, Express, REST APIs)
+   Pan-African agritech platform connecting smallholder farmers, cooperatives, and commodity buyers. Top 8 out of 20 at Africa Elevate DRC 2026.
+4. AI Agriculture Decision Support Platform (Python, Streamlit, Pandas)
+   Crop suitability scoring and weather risk advisories for Gambian smallholder farming.
+
+HONORS & LEADERSHIP
+- Top 8 Finalist — Africa Elevate DRC Innovation Bootcamp 2026 (Technical Lead, Team 3 ChiaLink)
+- Information Technology Students Association (ITSA) — Active Member & Peer Mentor at Civil Service University`;
+
+    navigator.clipboard.writeText(plainTextCV);
+    setCopiedPlaintext(true);
+    setTimeout(() => setCopiedPlaintext(false), 2500);
   };
 
   return (
@@ -32,20 +74,28 @@ export const CVPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            onClick={handleCopyPlaintext}
+            className="px-3.5 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
+          >
+            {copiedPlaintext ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+            {copiedPlaintext ? 'Copied to Clipboard' : 'Copy Plaintext CV'}
+          </button>
+
           <button
             onClick={handlePrint}
-            className="px-4 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+            className="px-3.5 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            <Printer className="w-4 h-4 text-slate-400" />
+            <Printer className="w-3.5 h-3.5 text-slate-400" />
             Print / Save PDF
           </button>
 
           <button
             onClick={handleDownload}
-            className="px-4 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-3.5 h-3.5" />
             Download PDF
           </button>
         </div>
