@@ -21,5 +21,6 @@ My long-term goal is to continue growing as a versatile engineer, contribute to 
   github: "https://github.com/scondlythorp",
   portfolioUrl: "https://github.com/scondlythorp",
   educationSummary: "National Diploma in Computer Science, Civil Service University, The Gambia (Completed, formal certificate pending issuance)",
-  availability: "Open to software development opportunities, technical collaborations, freelance projects, and conversations with people building useful technology."
+  availability: "Open to software development opportunities, technical collaborations, freelance projects, and conversations with people building useful technology.",
+  avatarImage: "/images/profile/modou_lamin_thorp.jpg"
 };

@@ -43,11 +43,14 @@ npm run dev
 
 The application will be accessible at `http://localhost:3000`.
 
-### Production Build
+### Production Build & Vercel Deployment
 
 ```bash
 npm run build
 ```
+
+**Note on Vercel Deployment:**
+The project includes a `.npmrc` file configured with `legacy-peer-deps=true` and an optimized dependency tree that resolves peer dependencies cleanly without `ERESOLVE` errors. When deploying to Vercel, simply connect your GitHub repository; the default Vite framework preset works out of the box with `npm run build`.
 
 ---
 
@@ -55,6 +58,9 @@ npm run build
 
 ```text
 ├── public/
+│   ├── MLT.png           # Profile photo
+│   ├── images/
+│   │   └── profile/      # Profile avatar assets
 │   ├── robots.txt
 │   ├── sitemap.xml
 │   └── documents/        # Place Modou_Lamin_Thorp_CV.pdf here

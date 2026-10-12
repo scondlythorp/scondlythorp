@@ -136,47 +136,63 @@ export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Right Sidebar: Quick Profile Card */}
+        {/* Right Sidebar: Quick Profile Card with Portrait Image */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-            <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 font-bold text-2xl font-mono shadow-md">
-              MLT
-            </div>
-            <div>
-              <h3 className="text-base font-bold text-white">{profileData.fullName}</h3>
-              <p className="text-xs text-slate-400">{profileData.primaryTitle}</p>
-            </div>
-
-            <div className="pt-2 border-t border-slate-800 space-y-2 text-xs">
-              <div className="flex justify-between text-slate-400">
-                <span>Location:</span>
-                <span className="text-slate-200">{profileData.location}</span>
-              </div>
-              <div className="flex justify-between text-slate-400">
-                <span>Education:</span>
-                <span className="text-slate-200">ND in Computer Science</span>
-              </div>
-              <div className="flex justify-between text-slate-400">
-                <span>Institution:</span>
-                <span className="text-slate-200">Civil Service University</span>
-              </div>
-              <div className="flex justify-between text-slate-400">
-                <span>Availability:</span>
-                <span className="text-cyan-400">Open for Work</span>
+          <div className="rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+            {/* Portrait Image */}
+            <div className="relative aspect-[4/5] w-full overflow-hidden bg-slate-950">
+              <img
+                src={profileData.avatarImage || "/MLT.png"}
+                alt="Modou Lamin Thorp Portrait"
+                className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-500"
+                onError={(e) => {
+                  // Fallback if path differs
+                  const target = e.currentTarget;
+                  if (target.src.indexOf('/MLT.png') === -1) {
+                    target.src = '/MLT.png';
+                  }
+                }}
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-90" />
+              <div className="absolute bottom-4 left-4 right-4">
+                <h3 className="text-lg font-bold text-white">{profileData.fullName}</h3>
+                <p className="text-xs text-cyan-400 font-medium">{profileData.primaryTitle}</p>
               </div>
             </div>
 
-            <div className="pt-2">
-              <a
-                href={profileData.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-2 px-3 text-xs font-semibold text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center justify-center gap-2"
-              >
-                <Github className="w-4 h-4" />
-                github.com/scondlythorp
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-              </a>
+            <div className="p-5 space-y-4">
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between text-slate-400">
+                  <span>Location:</span>
+                  <span className="text-slate-200">{profileData.location}</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Education:</span>
+                  <span className="text-slate-200">ND in Computer Science</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Institution:</span>
+                  <span className="text-slate-200">Civil Service University</span>
+                </div>
+                <div className="flex justify-between text-slate-400">
+                  <span>Availability:</span>
+                  <span className="text-emerald-400 font-medium">Open for Opportunities</span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-slate-800">
+                <a
+                  href={profileData.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-3 text-xs font-semibold text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center justify-center gap-2"
+                >
+                  <Github className="w-4 h-4" />
+                  github.com/scondlythorp
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                </a>
+              </div>
             </div>
           </div>
 

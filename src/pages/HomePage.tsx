@@ -21,10 +21,21 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenProject })
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           {/* Left Column: Typographic Hierarchy */}
           <div className="lg:col-span-7 flex flex-col justify-center space-y-6">
-            <div className="flex items-center gap-2 text-xs font-medium text-cyan-400">
-              <span>{profileData.location}</span>
-              <span aria-hidden="true">·</span>
-              <span className="text-slate-400">Computer Science Graduate</span>
+            <div className="flex items-center gap-3">
+              <img
+                src={profileData.avatarImage || "/MLT.png"}
+                alt="Modou Lamin Thorp"
+                className="w-12 h-12 rounded-full object-cover object-top border-2 border-cyan-400/50 shadow-md"
+                referrerPolicy="no-referrer"
+              />
+              <div>
+                <div className="flex items-center gap-2 text-xs font-medium text-cyan-400">
+                  <span>{profileData.location}</span>
+                  <span aria-hidden="true">·</span>
+                  <span className="text-slate-400">Civil Service University</span>
+                </div>
+                <div className="text-xs text-slate-300 font-semibold">{profileData.fullName}</div>
+              </div>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight text-balance">

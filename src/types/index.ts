@@ -10,6 +10,7 @@ export interface ProfileData {
   portfolioUrl?: string;
   educationSummary: string;
   availability: string;
+  avatarImage?: string;
 }
 
 export type ProjectStatus = 'Production Ready' | 'Completed MVP' | 'Active Prototype' | 'Academic / Learning';
